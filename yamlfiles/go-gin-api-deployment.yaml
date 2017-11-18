@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: go-gin-api
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: go-gin-api
+        tier: api
+    spec:
+      containers:
+      - name: go-gin-api
+        image: ytakky2014/go-gin-api:v1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+        - containerPort: 8080
