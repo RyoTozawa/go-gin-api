@@ -1,0 +1,26 @@
+version: '2'
+services:
+  # postgresql
+  postgresql:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432"
+  go:
+    build: .
+    volumes:
+      - ./api:/go/src/api
+    working_dir: /go/src/api
+    command: go run main.go
+    ports:
+      - 8080:8080
+    links:
+      - postgresql
+    environment:
+      DATABASE_USER: user
+      DATABASE_PASSWORD: password
+      DATABASE_PORT: 5432
+      DATABASE_HOST: postgresql
+      GOPATH: /go/
