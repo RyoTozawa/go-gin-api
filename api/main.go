@@ -70,7 +70,7 @@ func getUsers() ([]User) {
 }
 
 func getUser(id string) (User) {
-	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	db, _:= gorm.Open("postgres", "host=goginapi_postgresql_1 user=user dbname=user sslmode=disable password=password")
 	defer db.Close()
 	userModel := User{}
 	db.First(&userModel, id)
@@ -79,7 +79,7 @@ func getUser(id string) (User) {
 }
 
 func createUser(userInfo UserForm) (User) {
-	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	db, _:= gorm.Open("postgres", "host=goginapi_postgresql_1 user=user dbname=user sslmode=disable password=password")
 	defer db.Close()
 	userModel := User{}
 	userModel.Name = userInfo.Name
@@ -89,7 +89,7 @@ func createUser(userInfo UserForm) (User) {
 }
 
 func updateUser(userInfo UserForm, id string) (User) {
-	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	db, _:= gorm.Open("postgres", "host=goginapi_postgresql_1 user=user dbname=user sslmode=disable password=password")
 	defer db.Close()
 	userModel := User{}
 	db.First(&userModel, id)
@@ -101,7 +101,7 @@ func updateUser(userInfo UserForm, id string) (User) {
 }
 
 func deleteUser(id string) () {
-	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	db, _:= gorm.Open("postgres", "host=goginapi_postgresql_1 user=user dbname=user sslmode=disable password=password")
 	defer db.Close()
 	userModel := User{}
 	db.Delete(&userModel, id)
