@@ -5,17 +5,21 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	_ "github.com/lib/pq"
 	"time"
+
 )
 
 type User struct {
-	gorm.Model
-	Id int `gorm:"primary_key"`
-	Name string
-	Email string
-	CreatedAt time.Time `json:"string"`
-	UpdatedAt time.Time `json:"string"`
+	Id int `gorm:"primary_key" json:"id"`
+	Name string `json:"name"`
+	Email string `json:"email"`
+	CreatedAt time.Time `gorm:"created_at" json:"created_at"`
+	UpdatedAt time.Time `gorm:"updated_at" json:"updated_at"`
 }
 
+type UserForm struct {
+	Name string `json:"name" binding:"required"`
+	Email string `json:"email" binding:"required"`
+}
 func main() {
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
@@ -33,7 +37,13 @@ func main() {
 		user := getUser(c.Param("id"))
 		c.JSON(200, user)
 	})
-	
+
+	r.POST("/users", func(c *gin.Context) {
+		var user UserForm
+		c.Bind(&user)
+		postedUser := createUser(user)
+		c.JSON(200, postedUser)
+	})
 	r.Run()
 }
 
@@ -53,5 +63,15 @@ func getUser(id string) (User) {
 	userModel := User{}
 	db.First(&userModel, id)
 
+	return userModel
+}
+
+func createUser(userInfo UserForm) (User) {
+	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	defer db.Close()
+	userModel := User{}
+	userModel.Name = userInfo.Name
+	userModel.Email = userInfo.Email
+	db.Create(&userModel)
 	return userModel
 }
