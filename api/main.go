@@ -28,6 +28,12 @@ func main() {
 		users := getUsers()
 		c.JSON(200, users)
 	})
+
+	r.GET("/users/:id", func(c *gin.Context) {
+		user := getUser(c.Param("id"))
+		c.JSON(200, user)
+	})
+	
 	r.Run()
 }
 
@@ -39,4 +45,13 @@ func getUsers() ([]User) {
 	db.Find(&usersModel)
 
 	return usersModel
+}
+
+func getUser(id string) (User) {
+	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	defer db.Close()
+	userModel := User{}
+	db.First(&userModel, id)
+
+	return userModel
 }
