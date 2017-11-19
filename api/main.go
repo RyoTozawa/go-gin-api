@@ -44,6 +44,13 @@ func main() {
 		postedUser := createUser(user)
 		c.JSON(200, postedUser)
 	})
+
+	r.PUT("/users/:id", func(c *gin.Context) {
+		var user UserForm
+		c.Bind(&user)
+		postedUser := updateUser(user, c.Param("id"))
+		c.JSON(200, postedUser)
+	})
 	r.Run()
 }
 
@@ -74,4 +81,16 @@ func createUser(userInfo UserForm) (User) {
 	userModel.Email = userInfo.Email
 	db.Create(&userModel)
 	return userModel
+}
+
+func updateUser(userInfo UserForm, id string) (User) {
+	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	defer db.Close()
+	userModel := User{}
+	db.First(&userModel, id)
+	userModel.Name = userInfo.Name
+	userModel.Email = userInfo.Email
+	db.Save(&userModel)
+	return userModel
+
 }
