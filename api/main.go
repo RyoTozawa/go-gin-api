@@ -42,7 +42,7 @@ func main() {
 		var user UserForm
 		c.Bind(&user)
 		postedUser := createUser(user)
-		c.JSON(200, postedUser)
+		c.JSON(201, postedUser)
 	})
 
 	r.PUT("/users/:id", func(c *gin.Context) {
