@@ -51,6 +51,11 @@ func main() {
 		postedUser := updateUser(user, c.Param("id"))
 		c.JSON(200, postedUser)
 	})
+
+	r.DELETE("/users/:id", func(c* gin.Context) {
+		deleteUser(c.Param("id"))
+		c.JSON(204, nil)
+	})
 	r.Run()
 }
 
@@ -93,4 +98,11 @@ func updateUser(userInfo UserForm, id string) (User) {
 	db.Save(&userModel)
 	return userModel
 
+}
+
+func deleteUser(id string) () {
+	db, _:= gorm.Open("postgres", "host=127.0.0.1 user=user dbname=user sslmode=disable password=password")
+	defer db.Close()
+	userModel := User{}
+	db.Delete(&userModel, id)
 }
