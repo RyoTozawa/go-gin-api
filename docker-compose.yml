@@ -10,6 +10,10 @@ services:
       - "5432"
   go:
     build: .
+    volumes:
+      - ./api:/go/src/api
+    working_dir: /go/src/api
+    command: go run main.go
     ports:
       - 8080:8080
     links:
@@ -19,3 +23,4 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_PORT: 5432
       DATABASE_HOST: postgresql
+      GOPATH: /go/
